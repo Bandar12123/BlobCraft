@@ -139,14 +139,14 @@ blb_blob_t *blb_blob_create(uint32_t size, uint8_t step){
 
     blob->block = blb_block_create(size);
     if(!blob->block){
-        free(blob); //CLEAR STEP 1
+        blb_blob_delete(blob);  //CLEAR STEP 1
         return NULL;
     }
 
     blob->range = blb_range_create(0, size, step, false);
     if(!blob->range){
         blb_block_delete(blob->block); //CLEAR STEP 2
-        free(blob);                    //CLEAR STEP 1
+        blb_blob_delete(blob);                    //CLEAR STEP 1
         return NULL;
     }
 
@@ -154,7 +154,7 @@ blb_blob_t *blb_blob_create(uint32_t size, uint8_t step){
     if(!blob->cursor) {
         blb_range_delete(blob->range); // CLEAR STEP 3
         blb_block_delete(blob->block); // CLEAR STEP 2
-        free(blob);                    // CLEAR STEP 1
+        blb_blob_delete(blob);                    // CLEAR STEP 1
         return NULL;
     }
 
